@@ -31,27 +31,6 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
-        //$("#delete").click(function () {
-        //    var id = $(this).data('id');
-
-        //    $.ajax({
-        //        url: "/Photo/Delete",
-        //        type: "POST",
-        //        data: { id: id },
-        //        success: function (data) {
-        //            console.log(data);
-        //            if (data.respCode == "000") {
-        //                SuccessMessageBoxWithLink('Photo Delete is Successful', '/Photo/Index');
-        //            } else if (data.respCode == "999") {
-        //                ErrorMessageBox('Photo Create is Fail');
-        //            }
-        //        },
-        //        error: function (xhr, status, error) {
-        //            console.log(xhr.responseText); // Log the detailed error message for debugging
-        //        }
-        //});
-        //});
-
         function deleteItem(id) {
         $.ajax({
             url: '/Photo/Delete',
