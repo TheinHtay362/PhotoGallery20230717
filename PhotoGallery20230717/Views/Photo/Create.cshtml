@@ -1,0 +1,72 @@
+﻿@model PhotoGallery20230717.Models.PhotoModel
+
+@{
+    Layout = "_AdminLteLayout";
+    ViewData["Title"] = "Create";
+}
+
+<form id="uploadForm" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Caption">Caption</label>
+        <input asp-for="Caption" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <textarea asp-for="Description" class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Location">Location</label>
+        <input asp-for="Location" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="Tags">Tags</label>
+        <input asp-for="Tags" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="Image">Select Image</label>
+        <input type="file" class="form-control-file" id="Image" name="Image" required />
+    </div>
+    <input type="button" id="uploadButton" value="Upload" class="btn btn-primary" />
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $("#uploadButton").click(function () {
+            //var data = new FormData($("#uploadForm")[0]);
+            var formData = new FormData();
+            formData.append("Caption", $('#Caption').val());
+            formData.append("Description", $('#Description').val());
+            formData.append("Location", $('#Location').val());
+            formData.append("Tags", $('#Tags').val());
+            var photoFile = $('#Image')[0].files[0];
+            console.log(photoFile);
+            if (photoFile && photoFile.size > 0) {
+                formData.append("ImageFile", photoFile);
+            } else {
+                formData.append("ImageFile", "");
+            }
+            //console.log(formData);
+
+            $.ajax({
+                url: "/Photo/Create",
+                type: "POST",
+                data:formData ,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data.respCode == "000") {
+                        SuccessMessageBoxWithLink('Photo Create is Successful', '/Photo/Index');
+                    } else if (data.respCode == "999") {
+                        ErrorMessageBox('Photo Create is Fail');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText); // Log the detailed error message for debugging
+                }
+        });
+        });
+    </script>
+}

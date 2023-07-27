@@ -1,0 +1,74 @@
+﻿@model IEnumerable<PhotoGallery20230717.Models.PhotoModel>
+
+@{
+    Layout = "_AdminLteLayout";
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="btn btn-sm btn-primary" asp-action="Create">Upload</a>
+</p>
+ <div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img class="card-img-top img-thumbnail" src="data:image/png;base64,@Convert.ToBase64String(item.ImageData)" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Caption</h5>
+                    <p class="card-text">@item.UploadedOn.ToShortDateString()</p>
+                    <a href="@Url.Action("Details", "Photo", new { id = item.Id })" class="btn btn-sm btn-primary">View Details</a>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteItem(@item.Id)">Delete</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        //$("#delete").click(function () {
+        //    var id = $(this).data('id');
+
+        //    $.ajax({
+        //        url: "/Photo/Delete",
+        //        type: "POST",
+        //        data: { id: id },
+        //        success: function (data) {
+        //            console.log(data);
+        //            if (data.respCode == "000") {
+        //                SuccessMessageBoxWithLink('Photo Delete is Successful', '/Photo/Index');
+        //            } else if (data.respCode == "999") {
+        //                ErrorMessageBox('Photo Create is Fail');
+        //            }
+        //        },
+        //        error: function (xhr, status, error) {
+        //            console.log(xhr.responseText); // Log the detailed error message for debugging
+        //        }
+        //});
+        //});
+
+        function deleteItem(id) {
+        $.ajax({
+            url: '/Photo/Delete',
+            type: 'POST',
+            data: { id: id },
+            success: function (data) {
+                    console.log(data);
+                    if (data.respCode == "000") {
+                        SuccessMessageBoxWithLink('Photo Delete is Successful', '/Photo/Index');
+                    } else if (data.respCode == "999") {
+                        ErrorMessageBox('Photo Create is Fail');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText); // Log the detailed error message for debugging
+                }
+        });
+    }
+    </script>
+}
