@@ -1,0 +1,10 @@
+1)e None
+2)d stack
+3)c Binary to ASCII
+4)c post
+5)d bubble sort
+6)a other programs 
+7)c 4 to 8 byte
+8)c protect
+9)b Static
+10)c GETDATE
