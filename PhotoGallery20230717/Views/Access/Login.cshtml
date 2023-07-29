@@ -1,33 +1,77 @@
 ﻿@model PhotoGallery20230717.Models.LoginModel;
 @{
+    //Layout = "_AdminLteLayout";
     Layout = null;
 }
 
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Login</title>
-</head>
-<body>
-    <form asp-controller="Access" asp-action="Login" method="post">
-        <h1>Login</h1>
-        <input type="email" placeholder="UserName" asp-for="UserName"/>
-        <input type="password" placeholder="Password" asp-for="Password"/>
+    <link href="~/assets/css/style.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/assets/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <form asp-controller="Access" asp-action="Login" method="post" style="height:100%">
+    @*<section class="form-01-main">*@
+      <div class="form-01-main">
+      <div class="form-cover">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-sub-main">
+              <div class="_main_head_as">
+                <a href="#">
+                  <img src="~/assets/images/vector.png">
+                </a>
+              </div>
+              <div class="form-group">
+                  <input asp-for="UserName" placeholder="UserName" class="form-control _ge_de_ol" type="text" placeholder="Enter Email" required="" aria-required="true">
+              </div>
 
-        <label>
-            <input type="checkbox" asp-for="KeepLoggedIn"/>
-            Keep me logged In.
-        </label>
-        <button type="submit">Login</button>
+              <div class="form-group">                                              
+                <input id="password" asp-for="Password" type="password" class="form-control" placeholder="********" required="required">
+                <i toggle="#password"  class="fa fa-fw fa-eye toggle-password field-icon"></i>
+              </div>
 
-        @if(ViewData["ValidateMessage"] != null)
-        {
-            <br/>
-            <br/>
-            <label>@ViewData["ValidateMessage"]</label>
-        }
+              <label>
+                    <input type="checkbox" asp-for="KeepLoggedIn"/>
+                    Keep me logged In.
+              </label>
+@*
+              <div class="form-group">
+                <div class="check_box_main">
+                  <a href="#" class="pas-text">Forgot Password</a>
+                </div>
+              </div>*@
+
+              <div class="form-group">
+                <div class="btn_uy">
+                  @*<a href="#"><span>Login</span></a>*@
+                  <button class="btn btn-success btn-sm" type="submit">Login</button>
+                </div>
+              </div>
+
+              @if(ViewData["ValidateMessage"] != null)
+                {
+                    <br/>
+                    <br/>
+                    <label>@ViewData["ValidateMessage"]</label>
+                }
+
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+    @*</section>*@
     </form>
-</body>
+  </body>
 </html>
