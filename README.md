@@ -5,3 +5,7 @@ Add-Migration in NugetPackage console
 Update-database in NugetPackage console
 Run the project
 
+User Name = user@gmail.com
+Password  = 123
+
+
