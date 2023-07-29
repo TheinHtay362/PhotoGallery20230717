@@ -11,6 +11,21 @@
     <a class="btn btn-sm btn-primary" asp-action="Create">Upload</a>
 </p>
 
+<div id="loader" style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: #f3f3f3; z-index: 10000;">
+    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">Loading...</div>
+</div>
+
+<style>
+    body {
+        position: relative;
+    }
+    .photo-card {
+        display: none;
+    }
+</style>
+
+
+
 <div class="row" id="photoContainer">
     @foreach (var item in Model)
     {
@@ -87,8 +102,8 @@
         // Show current page and total pages
         $('#page-count').text('Page ' + currentPage + ' of ' + totalPages);
     }
-
-    $(document).ready(function () {
+    //$(document).ready(function () $(window).on("load", function()
+    $(document).ready(function (){
         updatePagination();
 
         $('#prev-btn').click(function() {
@@ -110,6 +125,8 @@
             currentPage = 1; // Reset current page
             updatePagination();
         });
+
+        $('#loader').hide(); // Hide loader
     });
 
     function deleteItem(id) {
@@ -133,5 +150,6 @@
         });
     }
 </script>
+
 
 }
