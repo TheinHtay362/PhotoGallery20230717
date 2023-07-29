@@ -10,10 +10,11 @@
 <p>
     <a class="btn btn-sm btn-primary" asp-action="Create">Upload</a>
 </p>
- <div class="row">
+
+<div class="row" id="photoContainer">
     @foreach (var item in Model)
     {
-        <div class="col-md-4">
+        <div class="col-md-4 photo-card">
             <div class="card mb-4">
                 <img class="card-img-top img-thumbnail" src="data:image/png;base64,@Convert.ToBase64String(item.ImageData)" alt="Card image cap" style="height:200px">
                 <div class="card-body">
@@ -26,12 +27,92 @@
         </div>
     }
 </div>
+@*
+<div id="pagination">
+    <label for="count-dropdown">Show:</label>
+    <select id="count-dropdown" class="form-control">
+        <option value="3">3</option>
+        <option value="6">6</option>
+        <option value="9">9</option>
+    </select>
+    <button id="prev-btn" class="btn btn-sm btn-primary">Previous</button>
+    <span id="page-count"></span>
+    <button id="next-btn" class="btn btn-sm btn-primary">Next</button>
+</div>
+*@
+
+<div id="pagination" style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center;">
+        <label for="count-dropdown" style="margin-right: 10px;">Show:</label>
+        <select id="count-dropdown" class="form-control" style="width: auto;">
+            <option value="3">3</option>
+            <option value="6">6</option>
+            <option value="9">9</option>
+        </select>
+    </div>
+    <div>
+        <button id="prev-btn" class="btn btn-sm btn-primary"><i class="fas fa-chevron-left"></i></button>
+        <span id="page-count" style="margin: 0 10px;"></span>
+        <button id="next-btn" class="btn btn-sm btn-primary"><i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
-        function deleteItem(id) {
+    var currentPage = 1;
+    var itemsPerPage = parseInt($('#count-dropdown').val()); // Get initial value from dropdown
+
+    function updatePagination() {
+        var totalItems = $('.photo-card').length;
+        var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        $('.photo-card').hide();
+        $('.photo-card').slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).show();
+
+        // Handle buttons enable/disable
+        $('#prev-btn').prop('disabled', false);
+        $('#next-btn').prop('disabled', false);
+
+        if (currentPage == 1) {
+            $('#prev-btn').prop('disabled', true);
+        }
+
+        if (currentPage == totalPages) {
+            $('#next-btn').prop('disabled', true);
+        }
+
+        // Show current page and total pages
+        $('#page-count').text('Page ' + currentPage + ' of ' + totalPages);
+    }
+
+    $(document).ready(function () {
+        updatePagination();
+
+        $('#prev-btn').click(function() {
+            if (!$(this).prop('disabled')) {
+                currentPage--;
+                updatePagination();
+            }
+        });
+
+        $('#next-btn').click(function() {
+            if (!$(this).prop('disabled')) {
+                currentPage++;
+                updatePagination();
+            }
+        });
+
+        $('#count-dropdown').change(function() {
+            itemsPerPage = parseInt($(this).val()); // Update items per page when dropdown changes
+            currentPage = 1; // Reset current page
+            updatePagination();
+        });
+    });
+
+    function deleteItem(id) {
         $.ajax({
             url: '/Photo/Delete',
             type: 'POST',
@@ -51,5 +132,6 @@
                 }
         });
     }
-    </script>
+</script>
+
 }
