@@ -108,11 +108,11 @@
             });
         }
 
-        function SuccessMessageWithLink(text, link) {
+        function SuccessMessageWithLink(text, link, title) {
             swal({
-                title: 'Success!',
+                title: title,
                 text: text,
-                type: 'success',
+                type: title,
                 showConfirmButton: false,
                 timer: 1500,
                 allowEscapeKey: false
@@ -120,6 +120,20 @@
                 window.location = link;
             });
         }
+
+        function DeleteMessageWithLink(text, link, title) {
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'warning', // this displays a warning icon, which could be interpreted as a 'delete' icon
+                showConfirmButton: false,
+                timer: 1500,
+                allowEscapeKey: false
+            }).then(function () {
+                window.location = link;
+            });
+        }
+
 
         function ConfirmMessageBox(title, message, callback) {
             swal({
@@ -386,6 +400,14 @@
                                 <i class="nav-icon far fa-image"></i>
                                 <p>
                                     Gallery
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Photo" asp-action="Logout" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Log Out
                                 </p>
                             </a>
                         </li>

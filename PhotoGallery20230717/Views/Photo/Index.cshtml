@@ -39,9 +39,11 @@
             success: function (data) {
                     console.log(data);
                     if (data.respCode == "000") {
-                        SuccessMessageBoxWithLink('Photo Delete is Successful', '/Photo/Index');
+                        SuccessMessageBoxWithLink(data.respMsg, '/Photo/Index', 'Success');
                     } else if (data.respCode == "999") {
                         ErrorMessageBox('Photo Create is Fail');
+                    }else if (data.respCode == "777") {
+                        DeleteMessageWithLink(data.respMsg, '/Access/Login', 'Error');
                     }
                 },
                 error: function (xhr, status, error) {

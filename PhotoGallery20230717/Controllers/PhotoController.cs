@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +7,10 @@ using PhotoGallery20230717.Context;
 using PhotoGallery20230717.Models;
 using System.Diagnostics.Metrics;
 using System.Drawing;
+
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PhotoGallery20230717.Controllers
 {
@@ -114,6 +117,14 @@ namespace PhotoGallery20230717.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             ResponseModel model = new ResponseModel();
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                model.respCode = "777";
+                model.respMsg = "You do not have access to delete photo, Please login to delete photo";
+                return Json(model);
+            }
+
             try
             {
                 var item = await _context.Photos.Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -121,7 +132,7 @@ namespace PhotoGallery20230717.Controllers
                 _context.Photos.Update(item);
                 var count = await _context.SaveChangesAsync();
                 model.respCode = count == 1 ? "000" : "999";
-                model.respMsg = count == 1 ? "Saving successful!" : "Saving failed!";
+                model.respMsg = count == 1 ? "Photo delete successful!" : "Delete failed!";
 
             }
             catch (Exception ex)
@@ -131,6 +142,12 @@ namespace PhotoGallery20230717.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return Json(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Access");
         }
     }
 }
